@@ -8,4 +8,4 @@ pip install -r requirements.txt
 python manage.py collectstatic --noinput
 
 # Run migrations
-python manage.py migrate
+python manage.py migrate --noinput
