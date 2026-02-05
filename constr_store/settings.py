@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-your-secret-key-here'
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 # Production settings
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,stationery-0lp6.onrender.com').split(',')
 
 # Database
 DATABASES = {
