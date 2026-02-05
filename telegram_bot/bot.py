@@ -8,11 +8,20 @@ logger = logging.getLogger(__name__)
 
 class TelegramBot:
     def __init__(self):
-        self.bot = Bot(token=settings.TELEGRAM_BOT_TOKEN)
-        self.admin_chat_id = settings.TELEGRAM_ADMIN_CHAT_ID
+        token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
+        if not token:
+            self.bot = None
+            logger.warning("TELEGRAM_BOT_TOKEN not configured")
+        else:
+            self.bot = Bot(token=token)
+        self.admin_chat_id = getattr(settings, 'TELEGRAM_ADMIN_CHAT_ID', None)
     
     async def send_payment_notification(self, order):
         """Отправить уведомление о новом платеже администратору"""
+        if not self.bot or not self.admin_chat_id:
+            logger.warning("Telegram bot not configured, skipping notification")
+            return
+            
         try:
             # Формируем сообщение с полной информацией
             from datetime import datetime, timedelta
@@ -99,8 +108,10 @@ telegram_bot = TelegramBot()
 # Синхронные обертки
 def send_payment_notification(order):
     """Синхронная обертка для отправки уведомления о платеже"""
-    asyncio.run(telegram_bot.send_payment_notification(order))
+    if telegram_bot.bot and telegram_bot.admin_chat_id:
+        asyncio.run(telegram_bot.send_payment_notification(order))
 
 def send_payment_confirmation(order):
     """Синхронная обертка для отправки подтверждения оплаты"""
-    asyncio.run(telegram_bot.send_payment_confirmation(order))
+    if telegram_bot.bot and telegram_bot.admin_chat_id:
+        asyncio.run(telegram_bot.send_payment_confirmation(order))
