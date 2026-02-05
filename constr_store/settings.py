@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.humanize',
     # Third party apps
-    'widget_tweaks',
+    'django-widget-tweaks',
     'crispy_forms',
     'crispy_bootstrap5',
     'allauth',
