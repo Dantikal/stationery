@@ -42,9 +42,14 @@ DATABASES = {
 }
 
 # Try to use DATABASE_URL if available
-import dj_database_url
-if 'DATABASE_URL' in config.config:
-    DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
+try:
+    import dj_database_url
+    if config('DATABASE_URL', default=''):
+        DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
+except ImportError:
+    pass
+except Exception:
+    pass
 # CSRF Settings
 CSRF_TRUSTED_ORIGINS = [
     "https://be0fc2af4e79.ngrok-free.app",
