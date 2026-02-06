@@ -1,5 +1,6 @@
 from django import template
 from django.conf import settings
+import os
 
 register = template.Library()
 
@@ -9,26 +10,18 @@ def media_url(value):
     if not value:
         return ''
     
-    # Debug logging
-    import logging
-    logger = logging.getLogger(__name__)
-    logger.info(f"media_url input: '{value}', DEBUG: {settings.DEBUG}")
+    # Нормализуем путь (убираем дублирующиеся разделители)
+    path = value.strip('/')
     
-    # Remove ALL leading prefixes
-    if value.startswith('/media/'):
-        value = value[7:]  # Remove '/media/'
-    elif value.startswith('media/'):
-        value = value[6:]  # Remove 'media/'
-    elif value.startswith('/static/media/'):
-        value = value[13:]  # Remove '/static/media/'
-    elif value.startswith('static/media/'):
-        value = value[12:]  # Remove 'static/media/'
+    # Убираем возможные префиксы
+    prefixes = ['media/', 'static/media/', 'static/']
+    for prefix in prefixes:
+        if path.startswith(prefix):
+            path = path[len(prefix):]
+            break
     
-    # Return correct URL based on environment
+    # Возвращаем правильный путь в зависимости от окружения
     if settings.DEBUG:
-        result = f'/media/{value}'
+        return f'/media/{path}'
     else:
-        result = f'/static/media/{value}'  # Исправляем на /static/media/
-    
-    logger.info(f"media_url output: '{result}'")
-    return result
+        return f'/static/media/{path}'
