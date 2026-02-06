@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-your-secret-key-here')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  # Отключено для продакшена
+DEBUG = True  # Отключено для продакшена
 
 # Production settings
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,stationery-0lp6.onrender.com').split(',')
@@ -163,7 +163,7 @@ STATICFILES_DIRS = [
 ]
 
 # Media files
-MEDIA_URL = '/static/media/'  # Используем static URL для продакшена
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Serving static files in DEBUG mode
