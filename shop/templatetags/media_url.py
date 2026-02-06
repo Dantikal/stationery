@@ -24,4 +24,4 @@ def media_url(value):
     if settings.DEBUG:
         return f'/media/{path}'
     else:
-        return f'/static/media/{path}'
+        return f'/static/{path}'  # Исправляем на /static/ вместо /static/media/
