@@ -159,6 +159,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
+    BASE_DIR / 'media',  # Add media to staticfiles for production
 ]
 
 # Media files
