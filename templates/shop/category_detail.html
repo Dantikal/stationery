@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load media_url %}
 {% load static %}
 
 {% block title %}{{ category.name }} - Конставары{% endblock %}
@@ -25,7 +26,7 @@
                         </div>
                         {% if category.image %}
                             <div class="col-md-4 text-center">
-                                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid rounded" style="max-height: 200px;">
+                                <img src="{{ category.image.url|media_url }}" alt="{{ category.name }}" class="img-fluid rounded" style="max-height: 200px;">
                             </div>
                         {% endif %}
                     </div>
@@ -47,7 +48,7 @@
                         <div class="col-md-4 col-lg-3 mb-4">
                             <div class="card h-100">
                                 {% if product.image %}
-                                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                                    <img src="{{ product.image.url|media_url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
                                 {% else %}
                                     <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
                                         <i class="fas fa-image fa-3x text-muted"></i>

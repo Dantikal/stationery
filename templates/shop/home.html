@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load media_url %}
 
 {% block title %}Главная - Констовары{% endblock %}
 
@@ -31,7 +32,7 @@
                 <div class="card-body text-center">
                     <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
                     {% if category.image %}
-                        <img src="{{ category.image.url }}" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" alt="{{ category.name }}">
+                        <img src="{{ category.image.url|media_url }}" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" alt="{{ category.name }}">
                     {% else %}
                         <i class="fas fa-tools fa-3x text-primary"></i>
                     {% endif %}
@@ -60,7 +61,7 @@
         <div class="col-md-3 mb-4">
             <div class="card h-100 product-card">
                 {% if product.image %}
-                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                    <img src="{{ product.image.url|media_url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
                 {% else %}
                     <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
                         <i class="fas fa-image fa-3x text-muted"></i>
@@ -103,7 +104,7 @@
         <div class="col-md-3 mb-4">
             <div class="card h-100 product-card">
                 {% if product.image %}
-                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                    <img src="{{ product.image.url|media_url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
                 {% else %}
                     <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
                         <i class="fas fa-image fa-3x text-muted"></i>

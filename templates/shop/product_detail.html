@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load media_url %}
 {% load widget_tweaks %}
 
 {% block title %}{{ product.name }} - СтройМатериал{% endblock %}
@@ -18,7 +19,7 @@
     <!-- Product Images -->
     <div class="col-md-6">
         {% if product.image %}
-            <img src="{{ product.image.url }}" class="img-fluid rounded mb-3" alt="{{ product.name }}">
+            <img src="{{ product.image.url|media_url }}" class="img-fluid rounded mb-3" alt="{{ product.name }}">
         {% else %}
             <div class="bg-light rounded d-flex align-items-center justify-content-center mb-3" style="height: 400px;">
                 <i class="fas fa-image fa-5x text-muted"></i>
@@ -99,7 +100,7 @@
         <div class="col-md-3 mb-3">
             <div class="card h-100">
                 {% if related.image %}
-                    <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.name }}" style="height: 150px; object-fit: cover;">
+                    <img src="{{ related.image.url|media_url }}" class="card-img-top" alt="{{ related.name }}" style="height: 150px; object-fit: cover;">
                 {% else %}
                     <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
                         <i class="fas fa-image fa-2x text-muted"></i>
