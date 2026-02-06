@@ -8,6 +8,11 @@ def send_telegram_notification_sync(order):
         token = settings.TELEGRAM_BOT_TOKEN
         chat_id = settings.TELEGRAM_ADMIN_CHAT_ID
         
+        # Проверяем наличие токена и chat_id
+        if not token or not chat_id:
+            print(f"❌ Telegram bot not configured: token={bool(token)}, chat_id={bool(chat_id)}")
+            return False
+        
         # Формируем сообщение с полной информацией
         from datetime import datetime, timedelta
         
