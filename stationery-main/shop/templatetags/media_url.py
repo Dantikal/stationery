@@ -17,4 +17,4 @@ def media_url(value):
     if settings.DEBUG:
         return f'/media/{value}'
     else:
-        return f'/static/media/{value}'
+        return f'/media/{value}'  # Use /media/ in production too
