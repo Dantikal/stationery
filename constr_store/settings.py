@@ -96,7 +96,6 @@ INSTALLED_APPS = [
     'shop',
     'telegram_bot',
     'dashboard',
-    'django.contrib.sites',  # Добавляем Sites framework
 ]
 
 MIDDLEWARE = [
