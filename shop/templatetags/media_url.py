@@ -9,6 +9,11 @@ def media_url(value):
     if not value:
         return ''
     
+    # Debug logging
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.info(f"media_url input: '{value}', DEBUG: {settings.DEBUG}")
+    
     # Remove leading /media/ if present
     if value.startswith('/media/'):
         value = value[7:]  # Remove '/media/'
@@ -17,6 +22,9 @@ def media_url(value):
     
     # Return correct URL based on environment
     if settings.DEBUG:
-        return f'/media/{value}'
+        result = f'/media/{value}'
     else:
-        return f'/static/{value}'
+        result = f'/static/media/{value}'  # Исправляем на /static/media/
+    
+    logger.info(f"media_url output: '{result}'")
+    return result
