@@ -11,7 +11,10 @@ def send_telegram_notification_sync(order):
         # Проверяем наличие токена и chat_id
         if not token or not chat_id:
             print(f"❌ Telegram bot not configured: token={bool(token)}, chat_id={bool(chat_id)}")
-            return False
+            print(f"📝 Заказ #{order.id} создан, но уведомление не отправлено")
+            print(f"💰 Сумма: {order.total_price} сом")
+            print(f"👤 Клиент: {order.first_name} {order.last_name}")
+            return False  # Возвращаем False чтобы показать что уведомление не отправлено
         
         # Формируем сообщение с полной информацией
         from datetime import datetime, timedelta

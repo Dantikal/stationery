@@ -382,9 +382,11 @@ def notify_payment_api(request, order_id):
             else:
                 return JsonResponse({
                     'success': False,
-                    'error': 'Не удалось отправить уведомление'
+                    'error': 'Не удалось отправить уведомление - Telegram bot не настроен'
                 }, status=500)
         except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
             logger.error(f"Ошибка отправки уведомления: {e}")
             return JsonResponse({
                 'success': False,
@@ -392,7 +394,10 @@ def notify_payment_api(request, order_id):
             }, status=500)
         
     except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Ошибка API notify_payment: {e}")
         return JsonResponse({
             'success': False,
-            'error': str(e)
+            'error': f'Ошибка API: {str(e)}'
         }, status=500)
