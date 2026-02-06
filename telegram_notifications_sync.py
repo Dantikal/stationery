@@ -20,6 +20,11 @@ def send_telegram_notification_sync(order):
             items.append(f"{item.product.name} x{item.quantity}")
         items_text = ", ".join(items)
         
+        # Получаем правильный URL админки
+        from django.contrib.sites.shortcuts import get_current_site
+        current_site = get_current_site(None)
+        admin_url = f"https://{current_site.domain}/admin/shop/order/{order.id}/change/"
+        
         message = f"""🤖 Бот KG Style:
 ──────────────
 💰 НОВЫЙ ЗАКАЗ
@@ -42,7 +47,7 @@ def send_telegram_notification_sync(order):
 🛒 Товары: {items_text}
 ──────────────
 
-🔗 Админка: http://127.0.0.1:8000/admin/shop/order/{order.id}/change/
+🔗 Админка: {admin_url}
 ──────────────"""
         
         # Создаем кнопки
