@@ -165,6 +165,10 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# WhiteNoise settings for production
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_SKIP_COMPRESS_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp']
+
 # Serving static files in DEBUG mode
 if DEBUG:
     from django.conf.urls.static import static
