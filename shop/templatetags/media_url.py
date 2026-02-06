@@ -14,11 +14,15 @@ def media_url(value):
     logger = logging.getLogger(__name__)
     logger.info(f"media_url input: '{value}', DEBUG: {settings.DEBUG}")
     
-    # Remove leading /media/ if present
+    # Remove ALL leading prefixes
     if value.startswith('/media/'):
         value = value[7:]  # Remove '/media/'
     elif value.startswith('media/'):
         value = value[6:]  # Remove 'media/'
+    elif value.startswith('/static/media/'):
+        value = value[13:]  # Remove '/static/media/'
+    elif value.startswith('static/media/'):
+        value = value[12:]  # Remove 'static/media/'
     
     # Return correct URL based on environment
     if settings.DEBUG:
