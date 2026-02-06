@@ -12,6 +12,8 @@ def media_url(value):
     # Remove leading /media/ if present
     if value.startswith('/media/'):
         value = value[7:]  # Remove '/media/'
+    elif value.startswith('media/'):
+        value = value[6:]  # Remove 'media/'
     
     # Return correct URL based on environment
     if settings.DEBUG:
