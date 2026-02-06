@@ -47,8 +47,13 @@ wheels/
 .DS_Store
 Thumbs.db
 
-# Media files
+# Media files (ignore but keep images)
 media/
+!media/**/*.jpg
+!media/**/*.jpeg
+!media/**/*.png
+!media/**/*.gif
+!media/**/*.webp
 
 # Static files
 staticfiles/
