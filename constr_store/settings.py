@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-your-secret-key-here'
 DEBUG = False  # Отключено для продакшена
 
 # Production settings
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,3c17-185-117-148-195.ngrok-free.app').split(',')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,stationery-0lp6.onrender.com').split(',')
 
 # Database
 DATABASES = {
@@ -48,7 +48,7 @@ except Exception:
     pass
 # CSRF Settings
 CSRF_TRUSTED_ORIGINS = [
-    "https://3c17-185-117-148-195.ngrok-free.app",
+    "https://stationery-0lp6.onrender.com",
 ]
 
 
