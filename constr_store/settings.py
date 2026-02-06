@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-your-secret-key-here')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  # Отключено для продакшена
+DEBUG = True  # Временно включено для диагностики ошибок
 
 # Production settings
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,stationery-0lp6.onrender.com').split(',')
@@ -163,6 +163,13 @@ STATICFILES_DIRS = [
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Serving static files in DEBUG mode
+if DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns = []
+    urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
+    urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
