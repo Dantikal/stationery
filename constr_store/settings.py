@@ -163,11 +163,7 @@ STATICFILES_DIRS = [
 ]
 
 # Media files
-if DEBUG:
-    MEDIA_URL = '/media/'
-else:
-    # В продакшене используем static URL
-    MEDIA_URL = '/static/media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Serving static files in DEBUG mode
