@@ -37,7 +37,8 @@ def handle_callback_query(callback_query):
     """Обработка нажатий на inline кнопки"""
     try:
         data = callback_query.get('data', '')
-        chat_id = callback_query.get('message', {}).get('chat', {}).get('id')
+        message = callback_query.get('message', {})
+        chat_id = message.get('chat', {}).get('id')
         callback_id = callback_query.get('id')
         
         print(f"Обработка callback data: {data}, chat_id: {chat_id}, callback_id: {callback_id}")  # Отладка
@@ -84,8 +85,18 @@ def confirm_order_payment(order_id, chat_id, callback_query):
         
         # Обновляем сообщение с кнопками
         try:
-            callback_query.answer(text="✅ Оплата подтверждена администратором.")
-            print("Callback answer отправлен")  # Отладка
+            # Для webhook используем requests
+            import requests
+            token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
+            if token:
+                url = f"https://api.telegram.org/bot{token}/answerCallbackQuery"
+                data = {
+                    'callback_query_id': callback_query.get('id'),
+                    'text': '✅ Оплата подтверждена администратором.',
+                    'show_alert': False
+                }
+                requests.post(url, data=data)
+                print("Callback answer отправлен")  # Отладка
         except Exception as e:
             print(f"Ошибка отправки callback answer: {e}")  # Отладка
         
@@ -94,11 +105,37 @@ def confirm_order_payment(order_id, chat_id, callback_query):
         
     except Order.DoesNotExist:
         print(f"Заказ #{order_id} не найден")  # Отладка
-        callback_query.answer(text="Заказ не найден", show_alert=True)
+        # Отправляем ответ об ошибке
+        try:
+            import requests
+            token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
+            if token:
+                url = f"https://api.telegram.org/bot{token}/answerCallbackQuery"
+                data = {
+                    'callback_query_id': callback_query.get('id'),
+                    'text': 'Заказ не найден',
+                    'show_alert': True
+                }
+                requests.post(url, data=data)
+        except:
+            pass
     except Exception as e:
         logger.error(f"Ошибка подтверждения оплаты: {e}")
         print(f"Ошибка подтверждения: {e}")  # Отладка
-        callback_query.answer(text="Ошибка подтверждения оплаты", show_alert=True)
+        # Отправляем ответ об ошибке
+        try:
+            import requests
+            token = getattr(settings, 'TELEGRAM_BOT_TOKEN', None)
+            if token:
+                url = f"https://api.telegram.org/bot{token}/answerCallbackQuery"
+                data = {
+                    'callback_query_id': callback_query.get('id'),
+                    'text': 'Ошибка подтверждения оплаты',
+                    'show_alert': True
+                }
+                requests.post(url, data=data)
+        except:
+            pass
 
 def reject_order_payment(order_id, chat_id, callback_query):
     """Отклонение оплаты заказа"""
