@@ -159,10 +159,11 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
+    BASE_DIR / 'media',  # Добавляем media в staticfiles для продакшена
 ]
 
 # Media files
-MEDIA_URL = '/media/'
+MEDIA_URL = '/static/media/'  # Используем static URL для продакшена
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Serving static files in DEBUG mode
