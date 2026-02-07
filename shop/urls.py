@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from . import views_media
 
 app_name = 'shop'
 
@@ -22,6 +21,4 @@ urlpatterns = [
     path('api/orders/<int:order_id>/change-payment/', views.change_payment_method_api, name='change_payment_method_api'),
     path('search/', views.search, name='search'),
     path('add-review/<int:product_id>/', views.add_review, name='add_review'),
-    # Media files serving
-    path('media/<path:path>', views_media.serve_media, name='serve_media'),
 ]

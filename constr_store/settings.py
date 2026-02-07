@@ -163,18 +163,14 @@ STATICFILES_DIRS = [
 # Media files configuration
 if DEBUG:
     MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
 else:
-    # В продакшене используем static URL
+    # В продакшене сохраняем media в staticfiles (которые сохраняются)
     MEDIA_URL = '/static/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+    MEDIA_ROOT = BASE_DIR / 'staticfiles' / 'media'
 
 # WhiteNoise configuration for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# WhiteNoise для media файлов в продакшене
-if not DEBUG:
-    WHITENOISE_ROOT = BASE_DIR / 'media'
-    WHITENOISE_USE_FINDERS = True
 
 # ==================== DEFAULT AUTO FIELD ====================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
