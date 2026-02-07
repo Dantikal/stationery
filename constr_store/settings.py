@@ -174,8 +174,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # WhiteNoise для media файлов в продакшене
 if not DEBUG:
-    WHITENOISE_ROOT = BASE_DIR / 'media'
-    WHITENOISE_USE_FINDERS = True
+    # Добавляем media в STATICFILES_DIRS чтобы WhiteNoise находил файлы
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static',
+        BASE_DIR / 'media',
+    ]
 
 # ==================== DEFAULT AUTO FIELD ====================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
