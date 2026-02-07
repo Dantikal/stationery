@@ -156,18 +156,24 @@ USE_TZ = True
 # ==================== STATIC & MEDIA FILES ====================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
 
 # Media files configuration
 if DEBUG:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR / 'media'
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static',
+    ]
 else:
     # В продакшене сохраняем media в staticfiles (которые сохраняются)
     MEDIA_URL = '/static/media/'
     MEDIA_ROOT = BASE_DIR / 'staticfiles' / 'media'
+    
+    # Добавляем media в STATICFILES_DIRS чтобы collectstatic копировал файлы
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static',
+        BASE_DIR / 'staticfiles' / 'media',
+    ]
 
 # WhiteNoise configuration for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
