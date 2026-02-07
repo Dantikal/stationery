@@ -148,7 +148,7 @@ function checkPaymentStatus() {
             .then(response => response.json())
             .then(data => {
                 console.log('Статус заказа:', data); // Отладка
-                if (data.paid) {
+                if (data.paid || data.status === 'confirmed') {
                     clearInterval(interval);
                     statusDiv.innerHTML = `
                         <div class="alert alert-success">
@@ -159,9 +159,15 @@ function checkPaymentStatus() {
                     setTimeout(() => {
                         window.location.href = "{% url 'shop:order_detail' order.pk %}";
                     }, 2000);
-                } else if (data.status === 'confirmed') {
-                    // Если статус confirmed но paid еще False
-                    console.log('Статус confirmed, но paid=False');
+                } else if (data.status === 'processing') {
+                    // Если статус processing (в обработке)
+                    console.log('Статус processing - ждем подтверждения');
+                    statusDiv.innerHTML = `
+                        <div class="alert alert-info">
+                            <i class="fas fa-clock"></i> 
+                            🔄 Заказ в обработке администратором...
+                        </div>
+                    `;
                 }
             })
             .catch(error => {

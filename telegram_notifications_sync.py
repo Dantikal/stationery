@@ -32,6 +32,7 @@ def send_telegram_notification_sync(order):
         from django.contrib.sites.shortcuts import get_current_site
         current_site = get_current_site(None)
         admin_url = f"https://{current_site.domain}/admin/shop/order/{order.id}/change/"
+        order_url = f"https://{current_site.domain}/order/{order.id}/"
         
         message = f"""🤖 Бот KG Style:
 ──────────────
@@ -56,6 +57,7 @@ def send_telegram_notification_sync(order):
 ──────────────
 
 🔗 Админка: {admin_url}
+🛍️ Страница заказа: {order_url}
 ⚠️ Вход в админку: https://{current_site.domain}/admin/
 ──────────────"""
         
