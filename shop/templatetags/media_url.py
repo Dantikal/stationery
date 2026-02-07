@@ -24,5 +24,5 @@ def media_url(value):
     if settings.DEBUG:
         return f'/media/{path}'
     else:
-        # В продакшене используем прямой URL к media view
-        return f'/media/{path}'
+        # В продакшене файлы в staticfiles/media
+        return f'/static/media/{path}'
