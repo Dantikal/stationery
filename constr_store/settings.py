@@ -156,22 +156,13 @@ USE_TZ = True
 # ==================== STATIC & MEDIA FILES ====================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
 # Media files configuration
-if DEBUG:
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
-    STATICFILES_DIRS = [
-        BASE_DIR / 'static',
-    ]
-else:
-    # В продакшене WhiteNoise обслуживает и static, и media
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
-    STATICFILES_DIRS = [
-        BASE_DIR / 'static',
-        BASE_DIR / 'media',  # WhiteNoise будет обслуживать media файлы
-    ]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
