@@ -20,9 +20,5 @@ def media_url(value):
             path = path[len(prefix):]
             break
     
-    # Возвращаем правильный путь в зависимости от окружения
-    if settings.DEBUG:
-        return f'/media/{path}'
-    else:
-        # В продакшене файлы в staticfiles/media
-        return f'/static/media/{path}'
+    # Возвращаем правильный путь - везде /media/
+    return f'/media/{path}'
