@@ -194,6 +194,16 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 TELEGRAM_BOT_TOKEN = config('TELEGRAM_BOT_TOKEN', default='')
 TELEGRAM_ADMIN_CHAT_ID = config('TELEGRAM_ADMIN_CHAT_ID', default='')
 
+# ==================== SHOP CONTACTS ====================
+SHOP_NAME = "Neznaika KG"
+SHOP_PHONE_1 = "+996 504 38 44 33"
+SHOP_PHONE_2 = "+996 707 54 53 64"
+SHOP_PHONE_3 = "+996 706 00 42 40"
+SHOP_INSTAGRAM = "https://www.instagram.com/neznaika_kg?igsh=MTdxZXdiamw0ZXR0cA=="
+SHOP_ADDRESS_1 = "Дордой джунхай 5-й проход, 507-508"
+SHOP_ADDRESS_2 = "Шанхай Шн25-26"
+SHOP_MAP_URL = "https://2gis.kg/bishkek/geo/70030076969219714/74.617278,42.937095"
+
 # ==================== EMAIL SETTINGS ====================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
