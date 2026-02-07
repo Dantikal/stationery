@@ -156,29 +156,25 @@ USE_TZ = True
 # ==================== STATIC & MEDIA FILES ====================
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
 
 # Media files configuration
 if DEBUG:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR / 'media'
-else:
-    # В продакшене используем простую конфигурацию
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
-
-# WhiteNoise configuration for static files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# WhiteNoise для media файлов в продакшене
-if not DEBUG:
-    # Добавляем media в STATICFILES_DIRS чтобы WhiteNoise находил файлы
     STATICFILES_DIRS = [
         BASE_DIR / 'static',
-        BASE_DIR / 'media',
     ]
+else:
+    # В продакшене WhiteNoise обслуживает и static, и media
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static',
+        BASE_DIR / 'media',  # WhiteNoise будет обслуживать media файлы
+    ]
+
+# WhiteNoise configuration
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ==================== DEFAULT AUTO FIELD ====================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
