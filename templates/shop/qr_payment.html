@@ -147,17 +147,21 @@ function checkPaymentStatus() {
         fetch(`/api/orders/{{ order.id }}/status/`)
             .then(response => response.json())
             .then(data => {
+                console.log('Статус заказа:', data); // Отладка
                 if (data.paid) {
                     clearInterval(interval);
                     statusDiv.innerHTML = `
                         <div class="alert alert-success">
                             <i class="fas fa-check-circle"></i> 
-                            Оплата подтверждена! Перенаправляем на страницу заказа...
+                            ✅ Оплата подтверждена! Перенаправляем на страницу заказа...
                         </div>
                     `;
                     setTimeout(() => {
                         window.location.href = "{% url 'shop:order_detail' order.pk %}";
                     }, 2000);
+                } else if (data.status === 'confirmed') {
+                    // Если статус confirmed но paid еще False
+                    console.log('Статус confirmed, но paid=False');
                 }
             })
             .catch(error => {

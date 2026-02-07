@@ -277,13 +277,23 @@ def qr_payment(request, order_id):
 @login_required
 def order_status_api(request, order_id):
     """API для проверки статуса заказа"""
-    order = get_object_or_404(Order, id=order_id, user=request.user)
-    
-    return JsonResponse({
-        'paid': order.paid,
-        'status': order.status,
-        'order_id': order.id
-    })
+    try:
+        order = get_object_or_404(Order, id=order_id, user=request.user)
+        
+        print(f"Проверка статуса заказа #{order_id}: paid={order.paid}, status={order.status}")  # Отладка
+        
+        return JsonResponse({
+            'paid': order.paid,
+            'status': order.status,
+            'order_id': order.id
+        })
+    except Exception as e:
+        print(f"Ошибка в order_status_api: {e}")  # Отладка
+        return JsonResponse({
+            'paid': False,
+            'status': 'error',
+            'error': str(e)
+        }, status=500)
 
 
 @csrf_exempt
