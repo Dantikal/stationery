@@ -20,7 +20,7 @@ def setup_webhook():
         return False
     
     # URL webhook на Render
-    webhook_url = "https://stationery-0lp6.onrender.com/telegram/webhook/"
+    webhook_url = "https://neznaika-kg.onrender.com/telegram/webhook/"
     
     # Удаляем старый webhook
     delete_url = f"https://api.telegram.org/bot{token}/deleteWebhook"
