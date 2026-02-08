@@ -24,24 +24,29 @@ class Category(models.Model):
         return reverse('shop:category_detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
-        # Конвертируем изображение в Base64 при сохранении
-        if self.image and hasattr(self.image, 'file') and not self.pk:
+        # Сначала сохраняем объект чтобы получить файл
+        super().save(*args, **kwargs)
+        
+        # Затем конвертируем изображение в Base64
+        if self.image and hasattr(self.image, 'path'):
             import base64
             
-            # Читаем файл изображения только при первом сохранении
             try:
-                self.image.open('rb')
-                image_data = self.image.read()
-                self.image.close()
+                # Читаем сохраненный файл
+                with open(self.image.path, 'rb') as f:
+                    image_data = f.read()
                 
                 # Конвертируем в Base64
                 self.image_data = base64.b64encode(image_data).decode('utf-8')
+                
+                # Сохраняем только image_data поле
+                super().save(update_fields=['image_data'])
             except Exception as e:
                 print(f"Ошибка чтения изображения: {e}")
         
         if not self.slug:
             self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
+            super().save(update_fields=['slug'])
     
     def get_image_url(self):
         """Возвращает URL изображения или Base64 data URL"""
@@ -79,25 +84,30 @@ class Product(models.Model):
         return reverse('shop:product_detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
-        # Конвертируем изображение в Base64 при сохранении
-        if self.image and hasattr(self.image, 'file') and not self.pk:
+        # Сначала сохраняем объект чтобы получить файл
+        super().save(*args, **kwargs)
+        
+        # Затем конвертируем изображение в Base64
+        if self.image and hasattr(self.image, 'path'):
             from django.core.files.base import ContentFile
             import base64
             
-            # Читаем файл изображения только при первом сохранении
             try:
-                self.image.open('rb')
-                image_data = self.image.read()
-                self.image.close()
+                # Читаем сохраненный файл
+                with open(self.image.path, 'rb') as f:
+                    image_data = f.read()
                 
                 # Конвертируем в Base64
                 self.image_data = base64.b64encode(image_data).decode('utf-8')
+                
+                # Сохраняем только image_data поле
+                super().save(update_fields=['image_data'])
             except Exception as e:
                 print(f"Ошибка чтения изображения: {e}")
         
         if not self.slug:
             self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
+            super().save(update_fields=['slug'])
     
     def get_image_url(self):
         """Возвращает URL изображения или Base64 data URL"""
