@@ -7,6 +7,7 @@ from telegram import Update
 from telegram.ext import CallbackContext
 from shop.models import Order
 from .bot import telegram_bot
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -95,8 +96,8 @@ def confirm_order_payment(order_id, chat_id, callback_query):
                     'text': '✅ Оплата подтверждена администратором.',
                     'show_alert': False
                 }
-                requests.post(url, data=data)
-                print("Callback answer отправлен")  # Отладка
+                response = requests.post(url, data=data)
+                print(f"Callback answer отправлен: {response.status_code}")  # Отладка
         except Exception as e:
             print(f"Ошибка отправки callback answer: {e}")  # Отладка
         
