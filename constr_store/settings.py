@@ -167,7 +167,7 @@ if DEBUG:
 else:
     # В продакшене используем постоянное хранилище Render
     MEDIA_URL = '/media/'
-    MEDIA_ROOT = '/var/data/media'
+    MEDIA_ROOT = '/tmp/media'
 
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
