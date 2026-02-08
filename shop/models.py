@@ -249,6 +249,7 @@ class BankAccount(models.Model):
     bank_name = models.CharField(max_length=100, verbose_name="Название банка")
     account_number = models.CharField(max_length=50, verbose_name="Номер счета")
     qr_code_image = models.ImageField(upload_to='qr_codes/', verbose_name="QR-код счета")
+    qr_code_data = models.TextField(blank=True, null=True, verbose_name="QR-код в Base64")
     is_active = models.BooleanField(default=True, verbose_name="Активен")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
 
@@ -263,6 +264,37 @@ class BankAccount(models.Model):
     def get_active(cls):
         """Получить активный банковский счет"""
         return cls.objects.filter(is_active=True).first()
+
+    def save(self, *args, **kwargs):
+        # Сначала сохраняем объект чтобы получить файл
+        super().save(*args, **kwargs)
+        
+        # Затем конвертируем QR-код в Base64
+        if self.qr_code_image and hasattr(self.qr_code_image, 'path'):
+            import base64
+            
+            try:
+                # Читаем сохраненный файл
+                with open(self.qr_code_image.path, 'rb') as f:
+                    qr_data = f.read()
+                
+                # Конвертируем в Base64
+                self.qr_code_data = base64.b64encode(qr_data).decode('utf-8')
+                
+                # Сохраняем только qr_code_data поле
+                super().save(update_fields=['qr_code_data'])
+            except Exception as e:
+                print(f"Ошибка чтения QR-кода: {e}")
+    
+    def get_qr_url(self):
+        """Возвращает URL QR-кода или Base64 data URL"""
+        # Сначала проверяем Base64 данные
+        if self.qr_code_data:
+            return f"data:image/png;base64,{self.qr_code_data}"
+        # Если Base64 нет, пробуем файл
+        elif self.qr_code_image and self.qr_code_image.url:
+            return self.qr_code_image.url
+        return None
 
 
 class Review(models.Model):

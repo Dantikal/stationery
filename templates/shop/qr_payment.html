@@ -23,8 +23,8 @@
 
                     <!-- QR-код -->
                     <div class="mb-4">
-                        {% if bank_account.qr_code_image %}
-                            <img src="{{ bank_account.qr_code_image.url|media_url }}" 
+                        {% if bank_account.get_qr_url %}
+                            <img src="{{ bank_account.get_qr_url }}" 
                                  alt="QR-код для оплаты" 
                                  class="img-fluid" 
                                  style="max-width: 300px; border: 2px solid #ddd; border-radius: 8px;">
