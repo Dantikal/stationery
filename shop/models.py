@@ -5,11 +5,12 @@ from django.utils.text import slugify
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=200, verbose_name="Название категории")
-    slug = models.SlugField(max_length=200, unique=True, verbose_name="URL")
+    name = models.CharField(max_length=100, verbose_name="Название категории")
+    slug = models.SlugField(max_length=100, unique=True, verbose_name="URL")
     description = models.TextField(blank=True, verbose_name="Описание")
     image = models.ImageField(upload_to='categories/', blank=True, verbose_name="Изображение")
     image_data = models.TextField(blank=True, null=True, verbose_name="Изображение в Base64")
+    # Test deploy - проверка что данные не исчезают
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
 
     class Meta:
