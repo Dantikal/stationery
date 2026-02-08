@@ -25,16 +25,19 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         # Конвертируем изображение в Base64 при сохранении
-        if self.image and hasattr(self.image, 'file'):
+        if self.image and hasattr(self.image, 'file') and not self.pk:
             import base64
             
-            # Читаем файл изображения
-            self.image.open('rb')
-            image_data = self.image.read()
-            self.image.close()
-            
-            # Конвертируем в Base64
-            self.image_data = base64.b64encode(image_data).decode('utf-8')
+            # Читаем файл изображения только при первом сохранении
+            try:
+                self.image.open('rb')
+                image_data = self.image.read()
+                self.image.close()
+                
+                # Конвертируем в Base64
+                self.image_data = base64.b64encode(image_data).decode('utf-8')
+            except Exception as e:
+                print(f"Ошибка чтения изображения: {e}")
         
         if not self.slug:
             self.slug = slugify(self.name)
@@ -75,17 +78,20 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         # Конвертируем изображение в Base64 при сохранении
-        if self.image and hasattr(self.image, 'file'):
+        if self.image and hasattr(self.image, 'file') and not self.pk:
             from django.core.files.base import ContentFile
             import base64
             
-            # Читаем файл изображения
-            self.image.open('rb')
-            image_data = self.image.read()
-            self.image.close()
-            
-            # Конвертируем в Base64
-            self.image_data = base64.b64encode(image_data).decode('utf-8')
+            # Читаем файл изображения только при первом сохранении
+            try:
+                self.image.open('rb')
+                image_data = self.image.read()
+                self.image.close()
+                
+                # Конвертируем в Base64
+                self.image_data = base64.b64encode(image_data).decode('utf-8')
+            except Exception as e:
+                print(f"Ошибка чтения изображения: {e}")
         
         if not self.slug:
             self.slug = slugify(self.name)
