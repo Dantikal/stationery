@@ -24,9 +24,9 @@
                                 <p class="text-muted">{{ category.description }}</p>
                             {% endif %}
                         </div>
-                        {% if category.image %}
+                        {% if category.get_image_url %}
                             <div class="col-md-4 text-center">
-                                <img src="{{ category.image.url|media_url }}" alt="{{ category.name }}" class="img-fluid rounded" style="max-height: 200px;">
+                                <img src="{{ category.get_image_url }}" alt="{{ category.name }}" class="img-fluid rounded" style="max-height: 200px;">
                             </div>
                         {% endif %}
                     </div>

@@ -5,10 +5,11 @@ from django.utils.text import slugify
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Название категории")
-    slug = models.SlugField(max_length=100, unique=True, verbose_name="URL")
+    name = models.CharField(max_length=200, verbose_name="Название категории")
+    slug = models.SlugField(max_length=200, unique=True, verbose_name="URL")
     description = models.TextField(blank=True, verbose_name="Описание")
     image = models.ImageField(upload_to='categories/', blank=True, verbose_name="Изображение")
+    image_data = models.TextField(blank=True, null=True, verbose_name="Изображение в Base64")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
 
     class Meta:
@@ -23,9 +24,29 @@ class Category(models.Model):
         return reverse('shop:category_detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
+        # Конвертируем изображение в Base64 при сохранении
+        if self.image and hasattr(self.image, 'file'):
+            import base64
+            
+            # Читаем файл изображения
+            self.image.open('rb')
+            image_data = self.image.read()
+            self.image.close()
+            
+            # Конвертируем в Base64
+            self.image_data = base64.b64encode(image_data).decode('utf-8')
+        
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+    
+    def get_image_url(self):
+        """Возвращает URL изображения или Base64 data URL"""
+        if self.image and self.image.url:
+            return self.image.url
+        elif self.image_data:
+            return f"data:image/jpeg;base64,{self.image_data}"
+        return None
 
 
 class Product(models.Model):

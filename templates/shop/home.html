@@ -31,8 +31,8 @@
             <div class="card h-100 category-card">
                 <div class="card-body text-center">
                     <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 150px;">
-                    {% if category.image %}
-                        <img src="{{ category.image.url|media_url }}" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" alt="{{ category.name }}">
+                    {% if category.get_image_url %}
+                        <img src="{{ category.get_image_url }}" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;" alt="{{ category.name }}">
                     {% else %}
                         <i class="fas fa-tools fa-3x text-primary"></i>
                     {% endif %}
