@@ -37,6 +37,7 @@ class Product(models.Model):
     available = models.BooleanField(default=True, verbose_name="Доступен")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория")
     image = models.ImageField(upload_to='products/', blank=True, verbose_name="Изображение")
+    image_data = models.TextField(blank=True, null=True, verbose_name="Изображение в Base64")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
 
@@ -52,9 +53,30 @@ class Product(models.Model):
         return reverse('shop:product_detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
+        # Конвертируем изображение в Base64 при сохранении
+        if self.image and hasattr(self.image, 'file'):
+            from django.core.files.base import ContentFile
+            import base64
+            
+            # Читаем файл изображения
+            self.image.open('rb')
+            image_data = self.image.read()
+            self.image.close()
+            
+            # Конвертируем в Base64
+            self.image_data = base64.b64encode(image_data).decode('utf-8')
+        
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+    
+    def get_image_url(self):
+        """Возвращает URL изображения или Base64 data URL"""
+        if self.image and self.image.url:
+            return self.image.url
+        elif self.image_data:
+            return f"data:image/jpeg;base64,{self.image_data}"
+        return None
 
     @property
     def is_in_stock(self):
