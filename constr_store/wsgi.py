@@ -20,7 +20,7 @@ if not os.environ.get('DJANGO_DEBUG'):
         import django
         from django.core.management import execute_from_command_line
         django.setup()
-        execute_from_command_line(['manage.py', 'migrate'], verbosity=0)
+        execute_from_command_line(['manage.py', 'migrate'])
         print("✅ Миграции применены")
     except Exception as e:
         print(f"❌ Ошибка миграций: {e}")

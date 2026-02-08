@@ -11,7 +11,7 @@ django.setup()
 def apply_migrations():
     """Применяет миграции"""
     try:
-        execute_from_command_line(['manage.py', 'migrate'], verbosity=1)
+        execute_from_command_line(['manage.py', 'migrate'])
         print("✅ Миграции успешно применены")
         return True
     except Exception as e:
