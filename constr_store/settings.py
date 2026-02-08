@@ -161,8 +161,13 @@ STATICFILES_DIRS = [
 ]
 
 # Media files configuration
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+if DEBUG:
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
+else:
+    # В продакшене используем постоянное хранилище Render
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = '/opt/render/project/src/media'
 
 # WhiteNoise configuration
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

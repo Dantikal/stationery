@@ -24,8 +24,6 @@ application = WhiteNoise(
     autorefresh=True
 )
 
-# Добавляем media файлы
-application.add_files(
-    os.path.join(os.path.dirname(__file__), '..', 'media'),
-    prefix='/media/'
-)
+# Добавляем media файлы из постоянного хранилища
+media_root = '/opt/render/project/src/media' if not os.environ.get('DJANGO_DEBUG') else os.path.join(os.path.dirname(__file__), '..', 'media')
+application.add_files(media_root, prefix='/media/')
