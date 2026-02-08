@@ -14,6 +14,11 @@ from whitenoise import WhiteNoise
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'constr_store.settings')
 
+# Создаем media директорию при старте
+if not os.environ.get('DJANGO_DEBUG'):
+    media_dir = '/var/data/media'
+    os.makedirs(media_dir, exist_ok=True)
+
 application = get_wsgi_application()
 
 # WhiteNoise для static файлов
@@ -25,5 +30,5 @@ application = WhiteNoise(
 )
 
 # Добавляем media файлы из постоянного хранилища
-media_root = '/opt/render/project/src/media' if not os.environ.get('DJANGO_DEBUG') else os.path.join(os.path.dirname(__file__), '..', 'media')
+media_root = '/var/data/media' if not os.environ.get('DJANGO_DEBUG') else os.path.join(os.path.dirname(__file__), '..', 'media')
 application.add_files(media_root, prefix='/media/')
