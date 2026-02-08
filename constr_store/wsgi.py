@@ -24,6 +24,41 @@ if not os.environ.get('DJANGO_DEBUG'):
         print("✅ Миграции применены")
     except Exception as e:
         print(f"❌ Ошибка миграций: {e}")
+    
+    # Конвертируем существующие изображения в Base64
+    try:
+        from shop.models import Product, Category
+        import base64
+        
+        # Конвертируем товары
+        products = Product.objects.filter(image__isnull=False).exclude(image='').filter(image_data__isnull=True)
+        for product in products:
+            try:
+                if product.image and hasattr(product.image, 'path'):
+                    with open(product.image.path, 'rb') as f:
+                        image_data = f.read()
+                    product.image_data = base64.b64encode(image_data).decode('utf-8')
+                    product.save(update_fields=['image_data'])
+                    print(f"✅ Обновлено изображение товара: {product.name}")
+            except Exception as e:
+                print(f"⚠️ Ошибка товара {product.name}: {e}")
+        
+        # Конвертируем категории
+        categories = Category.objects.filter(image__isnull=False).exclude(image='').filter(image_data__isnull=True)
+        for category in categories:
+            try:
+                if category.image and hasattr(category.image, 'path'):
+                    with open(category.image.path, 'rb') as f:
+                        image_data = f.read()
+                    category.image_data = base64.b64encode(image_data).decode('utf-8')
+                    category.save(update_fields=['image_data'])
+                    print(f"✅ Обновлено изображение категории: {category.name}")
+            except Exception as e:
+                print(f"⚠️ Ошибка категории {category.name}: {e}")
+                
+        print("🎉 Конвертация изображений завершена!")
+    except Exception as e:
+        print(f"❌ Ошибка конвертации: {e}")
 
 # Создаем media директорию при старте (без прав на /var/data)
 if not os.environ.get('DJANGO_DEBUG'):
