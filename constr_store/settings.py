@@ -229,12 +229,14 @@ if not DEBUG:
     # Для production меняем ALLOWED_HOSTS
     ALLOWED_HOSTS = [
         'stationery-0lp6.onrender.com',
+        'neznaika-kg.onrender.com',
         # Добавьте другие production домены
     ]
     
     # Для production меняем CSRF trusted origins
     CSRF_TRUSTED_ORIGINS = [
         'https://stationery-0lp6.onrender.com',
+        'https://neznaika-kg.onrender.com',
         # Добавьте другие production домены
     ]
 
