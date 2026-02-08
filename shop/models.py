@@ -222,7 +222,7 @@ class Order(models.Model):
     
     def get_payment_description(self):
         """Возвращает описание платежа для QR-кода"""
-        return f"Заказ #{self.id} Код:{self.qr_code}"
+        return "51"
 
 
 class OrderItem(models.Model):
