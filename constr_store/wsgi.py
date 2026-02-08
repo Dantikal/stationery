@@ -14,6 +14,27 @@ from whitenoise import WhiteNoise
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'constr_store.settings')
 
+# Применяем миграции при старте
+if not os.environ.get('DJANGO_DEBUG'):
+    try:
+        import django
+        from django.core.management import execute_from_command_line
+        django.setup()
+        execute_from_command_line(['manage.py', 'migrate'], verbosity=0)
+        print("✅ Миграции применены")
+    except Exception as e:
+        print(f"❌ Ошибка миграций: {e}")
+
+# Создаем media директорию при старте (без прав на /var/data)
+if not os.environ.get('DJANGO_DEBUG'):
+    try:
+        media_dir = '/var/data/media'
+        os.makedirs(media_dir, exist_ok=True)
+    except PermissionError:
+        # Если нет прав, используем временную папку
+        media_dir = '/tmp/media'
+        os.makedirs(media_dir, exist_ok=True)
+
 application = get_wsgi_application()
 
 # WhiteNoise для static файлов
@@ -25,7 +46,14 @@ application = WhiteNoise(
 )
 
 # Добавляем media файлы
-application.add_files(
-    os.path.join(os.path.dirname(__file__), '..', 'media'),
-    prefix='/media/'
-)
+if not os.environ.get('DJANGO_DEBUG'):
+    try:
+        media_root = '/var/data/media'
+        application.add_files(media_root, prefix='/media/')
+    except:
+        # Если нет прав, используем временную папку
+        media_root = '/tmp/media'
+        application.add_files(media_root, prefix='/media/')
+else:
+    media_root = os.path.join(os.path.dirname(__file__), '..', 'media')
+    application.add_files(media_root, prefix='/media/')
