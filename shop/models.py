@@ -45,10 +45,12 @@ class Category(models.Model):
     
     def get_image_url(self):
         """Возвращает URL изображения или Base64 data URL"""
-        if self.image and self.image.url:
-            return self.image.url
-        elif self.image_data:
+        # Сначала проверяем Base64 данные
+        if self.image_data:
             return f"data:image/jpeg;base64,{self.image_data}"
+        # Если Base64 нет, пробуем файл
+        elif self.image and self.image.url:
+            return self.image.url
         return None
 
 
@@ -99,10 +101,12 @@ class Product(models.Model):
     
     def get_image_url(self):
         """Возвращает URL изображения или Base64 data URL"""
-        if self.image and self.image.url:
-            return self.image.url
-        elif self.image_data:
+        # Сначала проверяем Base64 данные
+        if self.image_data:
             return f"data:image/jpeg;base64,{self.image_data}"
+        # Если Base64 нет, пробуем файл
+        elif self.image and self.image.url:
+            return self.image.url
         return None
 
     @property
